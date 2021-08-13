@@ -1,13 +1,9 @@
 import 'dart:isolate';
 
-import 'package:flutter/material.dart';
-
-import 'utils/my_logger.dart';
-
 bool _isLoopRunning = true;
 
 loopIsolate(SendPort sendPort){
-  final double _fps = 60;
+  final double _fps = 50;
   final double _oneSecond = 1000; //in ms
   final double _updateTime = _oneSecond / _fps; // time in ms to update screen
   _isLoopRunning = true;

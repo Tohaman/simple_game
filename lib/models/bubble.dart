@@ -1,27 +1,67 @@
-import 'dart:math';
-
 import 'dart:ui';
 
-class Bubble{
-  double _x = 0.0;
-    double get x => _x;
+import 'package:flutter/material.dart';
+import 'package:game/models/screen_object.dart';
 
-  double _y = 0.0;
-    double get y => _y;
+class Bubble extends ScreenObject{
+  double radius = 30;
+  double speed = 1;
+  late Size windowSize;
 
-  double _radius = 50;
-    double get radius => _radius;
-
-  double _speed = 1;
-
-  Bubble(Size windowSize){
-    var rnd = Random();
-    _y = rnd.nextDouble() * windowSize.height;
-    _x = windowSize.width;
-    _speed = rnd.nextDouble() * 2 + 1;
+  Bubble(this.windowSize){
+    setNewCoords();
   }
 
   void move() {
-    _x -= _speed;
+    x -= speed;
+    if (x < (0 - radius * 2)) {
+      setNewCoords();
+    }
   }
+
+  void setNewCoords() {
+    x = windowSize.width + radius * 2 + rnd.nextDouble() * windowSize.width;
+    y = rnd.nextDouble() * windowSize.height;
+    speed = rnd.nextDouble() * 2 + 1;
+    // radius = rnd.nextDouble() * 10 + 20;
+  }
+
+  Widget build() {
+    return (visible)
+        ? Positioned(
+            top: y,
+            left: x,
+            child: CustomPaint(
+              foregroundPainter: Circle(radius),
+              child: Container(
+                width: radius * 2,
+                height: radius * 2,
+              ),
+            ))
+        : SizedBox();
+  }
+}
+
+class Circle extends CustomPainter {
+  final double radius;
+
+  Circle(this.radius);
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    Paint pen = Paint()
+      ..strokeWidth = 2
+      ..color = Colors.red
+      ..style = PaintingStyle.stroke;
+
+    Offset center = Offset(size.width / 2, size.height / 2);  //center of device
+    // выводим наш круг по центру экрана
+    canvas.drawCircle(center, radius, pen);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return false;
+  }
+
 }
