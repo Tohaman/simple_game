@@ -7,6 +7,8 @@ class Bubble extends ScreenObject{
   double radius = 30;
   double speed = 1;
   late Size windowSize;
+  Color bubbleColor = Colors.white;
+
 
   Bubble(this.windowSize){
     setNewCoords();
@@ -32,7 +34,7 @@ class Bubble extends ScreenObject{
             top: y,
             left: x,
             child: CustomPaint(
-              foregroundPainter: Circle(radius),
+              foregroundPainter: Circle(radius, bubbleColor),
               child: Container(
                 width: radius * 2,
                 height: radius * 2,
@@ -44,14 +46,15 @@ class Bubble extends ScreenObject{
 
 class Circle extends CustomPainter {
   final double radius;
+  final Color bubbleColor;
 
-  Circle(this.radius);
+  Circle(this.radius, this.bubbleColor);
 
   @override
   void paint(Canvas canvas, Size size) {
     Paint pen = Paint()
       ..strokeWidth = 2
-      ..color = Colors.red
+      ..color = bubbleColor
       ..style = PaintingStyle.stroke;
 
     Offset center = Offset(size.width / 2, size.height / 2);  //center of device
